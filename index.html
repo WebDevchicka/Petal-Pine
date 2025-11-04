@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Petal & Pine — Floral Boutique</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1>Petal & Pine</h1>
+      <p class="tag">Beautiful bouquets • Pickup only</p>
+    </div>
+
+    <!-- Clickable cart with live count badge -->
+    <button id="cartBtn" class="cart-button" aria-label="Open cart">
+      <svg class="cart-svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44A1 1 0 0 0 9 18h8v-2H10.42a.25.25 0 0 1-.22-.12L11.1 15h6.45a1 1 0 0 0 .92-.63L21.9 6H6.21L5.27 4H3v2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 9 20h9v-2H9.42a1 1 0 0 1-.92-.63L7 11H4V9h2l1.1-2h9.8"></path>
+      </svg>
+      <span id="cartCount" class="cart-count" aria-live="polite">0</span>
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <h2>Fresh blooms, lovingly arranged</h2>
+      <p>Choose your flower, select a size, add a note and extras, then pickup when it's ready.</p>
+    </section>
+
+    <!-- Grid of products (3 columns x 2 rows) -->
+    <section id="productGrid" class="grid">
+      <!-- JS will populate product cards here -->
+    </section>
+  </main>
+
+  <!-- Slide-in Cart Page / Panel -->
+  <aside id="cartPanel" class="cart-panel" aria-hidden="true">
+    <div class="cart-header">
+      <h2>Your Cart — Pickup Only</h2>
+      <button id="closeCart" class="close-btn" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div id="cartItems" class="cart-items">
+      <!-- Items inserted by JS -->
+    </div>
+
+    <div class="cart-totals">
+      <div class="line"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+      <div class="line"><span>Tax (7%)</span><span id="tax">$0.00</span></div>
+      <div class="line total"><span>Grand Total</span><span id="grandTotal">$0.00</span></div>
+    </div>
+
+    <div class="cart-actions">
+      <button id="checkoutBtn" class="primary">Checkout</button>
+      <button id="clearCart" class="secondary">Empty Cart</button>
+    </div>
+  </aside>
+
+  <div id="overlay" class="overlay hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -32,7 +32,7 @@ function resolveImage(name){
   // Prefer same-folder images (user can add images with these filenames).
   // But fallback to Unsplash images for nicer look.
   const mapping = {
-    'tulips.jpg': 'https://images.unsplash.com/photo-1527030280862-64139fba04ca?auto=format&fit=crop&w=800&q=60',
+    'tulips.jpg': 'img/tulips.jpg',
     'red_roses.jpg': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60',
     'yellow_roses.jpg': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60',
     'lilies.jpg': 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=60',

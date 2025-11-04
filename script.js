@@ -33,11 +33,11 @@ function resolveImage(name){
   // But fallback to Unsplash images for nicer look.
   const mapping = {
     'tulips.jpg': 'img/tulips.jpg',
-    'red_roses.jpg': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60',
-    'yellow_roses.jpg': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60',
-    'lilies.jpg': 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=60',
-    'daisies.jpg': 'https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=800&q=60',
-    'corsages.jpg': 'https://images.unsplash.com/photo-1511454630041-8f0a9126f3d7?auto=format&fit=crop&w=800&q=60'
+    'red_roses.jpg': 'img/red_roses.jpg',
+    'yellow_roses.jpg': 'img/yellow_roses.jpg',
+    'lilies.jpg': 'img/lilies.jpg',
+    'daisies.jpg': 'img/daisies.jpg',
+    'corsages.jpg': 'img/corsages.jpg'
   };
   // Return local file name if exists (we cannot check file presence here),
   // but using mapping ensures an image either way.
@@ -64,6 +64,16 @@ function init(){
   renderProducts();
   updateCartUI();
   attachListeners();
+}
+
+function sizeLabel(size) {
+  switch(size) {
+    case "1": return "single";
+    case "6": return "half dozen";
+    case "12": return "dozen";
+    case "24": return "two dozen";
+    default: return size;
+  }
 }
 
 /* Render product grid (3x2 expected) */
@@ -158,7 +168,7 @@ function handleAddToCart(productId){
   saveCart();
   updateCartUI();
   // feedback
-  alert(`${product.name} (${size}) added to cart.`);
+  alert(`${product.name} added to cart.`);
 }
 
 /* Cart rendering */

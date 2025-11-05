@@ -1,4 +1,4 @@
-N// script.js — product data and cart logic
+// script.js — product data and cart logic
 
 /* Product + pricing data:
    Sizes: single (1), 6, 12, 24

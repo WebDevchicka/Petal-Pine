@@ -134,8 +134,8 @@ function handleAddToCart(productId){
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
 
-  const size= Number(document.getElementById(size-${productId}).value);
-  const sizeN = sizeLabel(size);
+  const sizeValue = document.getElementById(`size-${productId}`).value;
+  const sizeText = sizeLabel(sizeValue);
   const note = document.getElementById(`note-${productId}`).value.trim().slice(0,100);
   const balloon = document.getElementById(`addon-balloon-${productId}`).checked;
   const choco = document.getElementById(`addon-choco-${productId}`).checked;
@@ -144,7 +144,7 @@ function handleAddToCart(productId){
   if (isNaN(qty) || qty < 1) qty = 1;
 
   // price calculation (per bouquet)
-  const base = product.prices[size];
+  const base = product.prices[sizeValue];
   let addonTotal = 0;
   if (balloon) addonTotal += ADDON_PRICES.balloon;
   if (choco) addonTotal += ADDON_PRICES.chocolate;
@@ -157,7 +157,7 @@ function handleAddToCart(productId){
     cartId: `${productId}-${Date.now()}-${Math.floor(Math.random()*1000)}`,
     productId,
     name: product.name,
-    sizeN,
+    size: sizeText,
     qty,
     note,
     balloon, choco, teddy,
@@ -168,7 +168,7 @@ function handleAddToCart(productId){
   saveCart();
   updateCartUI();
   // feedback
-  alert(`${product.name} added to cart.`);
+  alert(`${product.name} (${sizeText}) added to cart.`);
 }
 
 /* Cart rendering */
@@ -186,7 +186,7 @@ function renderCartItems(){
     container.innerHTML = `
       <div class="item-thumb"><img src="${resolveImage(p.img)}" alt="${it.name}"></div>
       <div class="item-info">
-        <h4>${it.name} <small style="color:#777">(${it.sizeN})</small></h4>
+        <h4>${it.name} <small style="color:#777">(${it.size})</small></h4>
         <div class="item-meta">${it.balloon ? '🎈 Balloon ' : ''}${it.choco ? '🍫 Chocolate ' : ''}${it.teddy ? '🧸 Teddy ' : ''}</div>
         <div style="font-size:13px;color:#666">${it.note ? `Note: ${escapeHtml(it.note)}` : ''}</div>
         <div class="qty-controls" style="margin-top:8px">

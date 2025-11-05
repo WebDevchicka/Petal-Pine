@@ -134,7 +134,8 @@ function handleAddToCart(productId){
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
 
-  const size = sizeLabel(document.getElementById(`size-${productId}`).value);
+  const size= Number(document.getElementById(size-${productId}).value);
+  const sizeN = sizeLabel(size);
   const note = document.getElementById(`note-${productId}`).value.trim().slice(0,100);
   const balloon = document.getElementById(`addon-balloon-${productId}`).checked;
   const choco = document.getElementById(`addon-choco-${productId}`).checked;
@@ -156,7 +157,7 @@ function handleAddToCart(productId){
     cartId: `${productId}-${Date.now()}-${Math.floor(Math.random()*1000)}`,
     productId,
     name: product.name,
-    size,
+    sizeN,
     qty,
     note,
     balloon, choco, teddy,

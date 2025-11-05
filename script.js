@@ -135,7 +135,7 @@ function handleAddToCart(productId){
   if (!product) return;
 
   const size= Number(document.getElementById(size-${productId}).value);
-  const sizeN = sizeLabel(size);
+  const sizeN = sizeLabel(document.getElementById(`size-${productId}`).value);
   const note = document.getElementById(`note-${productId}`).value.trim().slice(0,100);
   const balloon = document.getElementById(`addon-balloon-${productId}`).checked;
   const choco = document.getElementById(`addon-choco-${productId}`).checked;

@@ -1,4 +1,4 @@
-// script.js — product data and cart logic
+N// script.js — product data and cart logic
 
 /* Product + pricing data:
    Sizes: single (1), 6, 12, 24
@@ -186,7 +186,7 @@ function renderCartItems(){
     container.innerHTML = `
       <div class="item-thumb"><img src="${resolveImage(p.img)}" alt="${it.name}"></div>
       <div class="item-info">
-        <h4>${it.name} <small style="color:#777">(${it.size})</small></h4>
+        <h4>${it.name} <small style="color:#777">(${it.sizeN})</small></h4>
         <div class="item-meta">${it.balloon ? '🎈 Balloon ' : ''}${it.choco ? '🍫 Chocolate ' : ''}${it.teddy ? '🧸 Teddy ' : ''}</div>
         <div style="font-size:13px;color:#666">${it.note ? `Note: ${escapeHtml(it.note)}` : ''}</div>
         <div class="qty-controls" style="margin-top:8px">

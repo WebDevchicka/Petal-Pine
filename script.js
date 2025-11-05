@@ -5,32 +5,20 @@
    Prices specified in the requirements (per bouquet).
 */
 const PRODUCTS = [
-  { id: 'tulips', name: 'Tulips', img: 'tulips.jpg',
-    prices: {1:5, 6:20, 12:40, 24:60} },
-  { id: 'red_roses', name: 'Red Roses', img: 'red_roses.jpg',
-    prices: {1:5, 6:20, 12:40, 24:60} },
-  { id: 'yellow_roses', name: 'Yellow Roses', img: 'yellow_roses.jpg',
-    prices: {1:5, 6:20, 12:40, 24:60} },
-  { id: 'lilies', name: 'Lilies', img: 'lilies.jpg',
-    prices: {1:6, 6:24, 12:48, 24:72} },
-  { id: 'daisies', name: 'Daisies', img: 'daisies.jpg',
-    prices: {1:5, 6:20, 12:40, 24:60} },
-  { id: 'corsages', name: 'Corsages', img: 'corsages.jpg',
-    prices: {1:15, 6:60, 12:120, 24:180} }
+  { id: 'tulips', name: 'Tulips', img: 'tulips.jpg', prices: {1:5, 6:20, 12:40, 24:60} },
+  { id: 'red_roses', name: 'Red Roses', img: 'red_roses.jpg', prices: {1:5, 6:20, 12:40, 24:60} },
+  { id: 'yellow_roses', name: 'Yellow Roses', img: 'yellow_roses.jpg', prices: {1:5, 6:20, 12:40, 24:60} },
+  { id: 'lilies', name: 'Lilies', img: 'lilies.jpg', prices: {1:6, 6:24, 12:48, 24:72} },
+  { id: 'daisies', name: 'Daisies', img: 'daisies.jpg', prices: {1:5, 6:20, 12:40, 24:60} },
+  { id: 'corsages', name: 'Corsages', img: 'corsages.jpg', prices: {1:15, 6:60, 12:120, 24:180} }
 ];
 
 const ADDON_PRICES = { balloon:5, chocolate:7, teddy:8 };
 const TAX_RATE = 0.07;
-
 let cart = [];
 
-/* Helper: load sample images:
-   This demo expects image files named as product.img in the same folder or uses placeholders.
-   If those files aren't provided, we will use external placeholder images.
-*/
+/* Helper: load sample images */
 function resolveImage(name){
-  // Prefer same-folder images (user can add images with these filenames).
-  // But fallback to Unsplash images for nicer look.
   const mapping = {
     'tulips.jpg': 'img/tulips.jpg',
     'red_roses.jpg': 'img/red_roses.jpg',
@@ -39,8 +27,6 @@ function resolveImage(name){
     'daisies.jpg': 'img/daisies.jpg',
     'corsages.jpg': 'img/corsages.jpg'
   };
-  // Return local file name if exists (we cannot check file presence here),
-  // but using mapping ensures an image either way.
   return mapping[name] || mapping['tulips.jpg'];
 }
 
@@ -60,16 +46,17 @@ const clearCartBtn = document.getElementById('clearCart');
 
 /* Initialize */
 function init(){
+  if (!productGrid) return console.error("Error: Required DOM elements not found.");
   loadCart();
   renderProducts();
   updateCartUI();
   attachListeners();
 }
 
-/* Render product grid (3x2 expected) */
+/* Render product grid */
 function renderProducts(){
   productGrid.innerHTML = '';
-  PRODUCTS.forEach((p, idx) => {
+  PRODUCTS.forEach((p) => {
     const card = document.createElement('article');
     card.className = 'card';
     card.innerHTML = `
@@ -103,7 +90,8 @@ function renderProducts(){
 
         <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
           <label style="font-weight:700;">Qty
-            <input id="qty-${p.id}" type="number" min="1" value="1" style="width:64px;margin-left:8px;padding:6px;border-radius:6px;border:1px solid #eee">
+            <input id="qty-${p.id}" type="number" min="1" value="1"
+              style="width:64px;margin-left:8px;padding:6px;border-radius:6px;border:1px solid #eee">
           </label>
           <button class="btn-add" data-id="${p.id}">Add to cart</button>
         </div>
@@ -112,14 +100,13 @@ function renderProducts(){
     productGrid.appendChild(card);
   });
 
-  // add event listeners to Add buttons
+  // Add button handlers
   document.querySelectorAll('.btn-add').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id');
-      handleAddToCart(id);
-    });
+    btn.addEventListener('click', () => handleAddToCart(btn.dataset.id));
   });
 }
+
+/* Convert size number to readable label */
 function sizeLabel(size) {
   switch(size) {
     case "1": return "single";
@@ -129,10 +116,11 @@ function sizeLabel(size) {
     default: return size;
   }
 }
+
 /* Add selected product to cart */
 function handleAddToCart(productId){
   const product = PRODUCTS.find(p => p.id === productId);
-  if (!product) return;
+  if (!product) return console.warn(`Product ${productId} not found`);
 
   const sizeValue = document.getElementById(`size-${productId}`).value;
   const sizeText = sizeLabel(sizeValue);
@@ -143,16 +131,15 @@ function handleAddToCart(productId){
   let qty = parseInt(document.getElementById(`qty-${productId}`).value, 10);
   if (isNaN(qty) || qty < 1) qty = 1;
 
-  // price calculation (per bouquet)
   const base = product.prices[sizeValue];
+  if (!base) return alert("Invalid size selected.");
+
   let addonTotal = 0;
   if (balloon) addonTotal += ADDON_PRICES.balloon;
   if (choco) addonTotal += ADDON_PRICES.chocolate;
   if (teddy) addonTotal += ADDON_PRICES.teddy;
   const price = base + addonTotal;
 
-
-  // create cart item with unique id
   const item = {
     cartId: `${productId}-${Date.now()}-${Math.floor(Math.random()*1000)}`,
     productId,
@@ -167,11 +154,10 @@ function handleAddToCart(productId){
   cart.push(item);
   saveCart();
   updateCartUI();
-  // feedback
   alert(`${product.name} (${sizeText}) added to cart.`);
 }
 
-/* Cart rendering */
+/* Render cart items */
 function renderCartItems(){
   cartItemsEl.innerHTML = '';
   if (cart.length === 0){
@@ -184,10 +170,12 @@ function renderCartItems(){
     const container = document.createElement('div');
     container.className = 'cart-item';
     container.innerHTML = `
-      <div class="item-thumb"><img src="${resolveImage(p.img)}" alt="${it.name}"></div>
+      <div class="item-thumb"><img src="${resolveImage(p?.img)}" alt="${it.name}"></div>
       <div class="item-info">
         <h4>${it.name} <small style="color:#777">(${it.size})</small></h4>
-        <div class="item-meta">${it.balloon ? '🎈 Balloon ' : ''}${it.choco ? '🍫 Chocolate ' : ''}${it.teddy ? '🧸 Teddy ' : ''}</div>
+        <div class="item-meta">
+          ${it.balloon ? '🎈 Balloon ' : ''}${it.choco ? '🍫 Chocolate ' : ''}${it.teddy ? '🧸 Teddy ' : ''}
+        </div>
         <div style="font-size:13px;color:#666">${it.note ? `Note: ${escapeHtml(it.note)}` : ''}</div>
         <div class="qty-controls" style="margin-top:8px">
           <button class="qty-minus" data-id="${it.cartId}">−</button>
@@ -204,46 +192,39 @@ function renderCartItems(){
     cartItemsEl.appendChild(container);
   });
 
-  // Attach qty and delete listeners
-  cartItemsEl.querySelectorAll('.qty-plus').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      changeQuantity(id, 1);
-    });
-  });
-  cartItemsEl.querySelectorAll('.qty-minus').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      changeQuantity(id, -1);
-    });
-  });
-  cartItemsEl.querySelectorAll('.remove-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.id;
-      removeItem(id);
-    });
-  });
+  // Listeners
+  cartItemsEl.querySelectorAll('.qty-plus').forEach(btn =>
+    btn.addEventListener('click', () => changeQuantity(btn.dataset.id, 1))
+  );
+  cartItemsEl.querySelectorAll('.qty-minus').forEach(btn =>
+    btn.addEventListener('click', () => changeQuantity(btn.dataset.id, -1))
+  );
+  cartItemsEl.querySelectorAll('.remove-btn').forEach(btn =>
+    btn.addEventListener('click', () => removeItem(btn.dataset.id))
+  );
 
-  // disable minus when qty==1 (greyed out)
+  // Disable minus when qty==1
   cartItemsEl.querySelectorAll('.cart-item').forEach(el => {
     const qtyDiv = el.querySelector('.qty-controls div');
     const qty = Number(qtyDiv.textContent);
     const minusBtn = el.querySelector('.qty-minus');
-    if (qty <= 1) minusBtn.classList.add('disabled'); else minusBtn.classList.remove('disabled');
+    if (qty <= 1) minusBtn.classList.add('disabled');
+    else minusBtn.classList.remove('disabled');
   });
 }
 
-/* Utility helpers */
+/* Helpers */
 function formatPrice(v){ return `$${v.toFixed(2)}`; }
 function escapeHtml(s){
-  return s.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+  return s.replace(/[&<>"']/g, (m) => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]
+  ));
 }
 
 /* Quantity change */
 function changeQuantity(cartId, delta){
-  const idx = cart.findIndex(i => i.cartId === cartId);
-  if (idx === -1) return;
-  const item = cart[idx];
+  const item = cart.find(i => i.cartId === cartId);
+  if (!item) return;
   item.qty = Math.max(1, item.qty + delta);
   saveCart();
   updateCartUI();
@@ -264,7 +245,7 @@ function computeTotals(){
   return { subtotal, tax, grand };
 }
 
-/* Update cart icon and panel */
+/* Update cart UI */
 function updateCartUI(){
   cartCount.textContent = cart.reduce((s,i) => s + i.qty, 0);
   renderCartItems();
@@ -274,16 +255,19 @@ function updateCartUI(){
   grandEl.textContent = formatPrice(t.grand);
 }
 
-/* Persistence */
+/* Save/load cart */
 function saveCart(){ localStorage.setItem('petal_cart_v1', JSON.stringify(cart)); }
 function loadCart(){
-  const raw = localStorage.getItem('petal_cart_v1');
-  if (raw){
-    try{ cart = JSON.parse(raw) || []; } catch(e){ cart = []; }
+  try {
+    const raw = localStorage.getItem('petal_cart_v1');
+    cart = raw ? JSON.parse(raw) : [];
+  } catch(e){
+    console.error("Cart load failed:", e);
+    cart = [];
   }
 }
 
-/* UI: open/close cart panel */
+/* UI controls */
 function openCart(){
   cartPanel.classList.add('open');
   overlay.classList.remove('hidden');
@@ -301,7 +285,7 @@ function handleCheckout(){
     alert('Your cart is empty.');
     return;
   }
-  alert('Thank you for your order, you will get an email confirmation when your order is ready for pick-up');
+  alert('Thank you for your order! You will receive an email confirmation.');
   cart = [];
   saveCart();
   updateCartUI();
@@ -316,12 +300,13 @@ function clearCart(){
 
 /* Attach listeners */
 function attachListeners(){
-  cartBtn.addEventListener('click', () => { openCart(); });
+  if (!cartBtn) return;
+  cartBtn.addEventListener('click', openCart);
   closeCartBtn.addEventListener('click', closeCart);
   overlay.addEventListener('click', closeCart);
   checkoutBtn.addEventListener('click', handleCheckout);
   clearCartBtn.addEventListener('click', clearCart);
 }
 
-/* init on DOM ready */
+/* Init on DOM ready */
 document.addEventListener('DOMContentLoaded', init);

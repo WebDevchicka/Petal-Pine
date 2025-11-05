@@ -66,16 +66,6 @@ function init(){
   attachListeners();
 }
 
-function sizeLabel(size) {
-  switch(size) {
-    case "1": return "single";
-    case "6": return "half dozen";
-    case "12": return "dozen";
-    case "24": return "two dozen";
-    default: return size;
-  }
-}
-
 /* Render product grid (3x2 expected) */
 function renderProducts(){
   productGrid.innerHTML = '';
@@ -130,7 +120,15 @@ function renderProducts(){
     });
   });
 }
-
+function sizeLabel(size) {
+  switch(size) {
+    case "1": return "single";
+    case "6": return "half dozen";
+    case "12": return "dozen";
+    case "24": return "two dozen";
+    default: return size;
+  }
+}
 /* Add selected product to cart */
 function handleAddToCart(productId){
   const product = PRODUCTS.find(p => p.id === productId);
@@ -151,6 +149,7 @@ function handleAddToCart(productId){
   if (choco) addonTotal += ADDON_PRICES.chocolate;
   if (teddy) addonTotal += ADDON_PRICES.teddy;
   const price = base + addonTotal;
+
 
   // create cart item with unique id
   const item = {

@@ -1,0 +1,1 @@
+// Fixed script.js content — refer to canvas version

@@ -138,14 +138,21 @@ function renderCartItems(){
   }
 
   cart.forEach(item => {
+   const product = PRODUCTS.find(p => p.id === item.productId);
+     
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
-      <strong>${item.name}</strong> (${item.size})<br>
-      Qty: ${item.qty}<br>
-      ${item.balloon ? '🎈 ' : ''}${item.choco ? '🍫 ' : ''}${item.teddy ? '🧸 ' : ''}
-      <br>$${(item.pricePer * item.qty).toFixed(2)}
-      <button class="remove-btn" data-id="${item.cartId}">Remove</button>
+      <div class="thumb-wrap">
+         <img src="${resolveImage(product.img)}" class="thumb" alt="${item.name}">
+      </div>
+      <div class="cart-info">
+         <strong>${item.name}</strong> (${item.size})<br>
+         Qty: ${item.qty}<br>
+         ${item.balloon ? '🎈 ' : ''}${item.choco ? '🍫 ' : ''}${item.teddy ? '🧸 ' : ''}
+         <br>$${(item.pricePer * item.qty).toFixed(2)}
+         <button class="remove-btn" data-id="${item.cartId}">Remove</button>
+      </div>
     `;
     cartItemsEl.appendChild(div);
   });

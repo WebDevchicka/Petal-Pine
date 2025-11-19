@@ -44,6 +44,11 @@ body {
   border-radius:12px;
   box-shadow:var(--shadow);
 }
+.brand{
+  background-color: #4a9658;
+  display: flex;
+  text-align: center;
+}
 .brand h1{
   margin:0;
   color:var(--accent);

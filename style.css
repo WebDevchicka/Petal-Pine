@@ -37,17 +37,13 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
+  text-align: center;
   max-width:var(--max-width);
   margin:20px auto 0;
   padding:18px 22px;
-  background: rgba(255,255,255,0.95);
+  background: #71bf7f;
   border-radius:12px;
   box-shadow:var(--shadow);
-}
-.brand{
-  background-color: #71bf7f;
-  display: flex;
-  text-align: center;
 }
 .brand h1{
   margin:0;

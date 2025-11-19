@@ -41,7 +41,7 @@ body {
   max-width:var(--max-width);
   margin:20px auto 0;
   padding:18px 22px;
-  background: #71bf7f;
+  background-color: #71bf7f;
   border-radius:12px;
   box-shadow:var(--shadow);
 }
